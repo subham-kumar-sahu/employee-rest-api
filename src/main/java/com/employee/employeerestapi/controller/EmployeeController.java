@@ -15,12 +15,30 @@ import com.employee.employeerestapi.model.Employee;
 import com.employee.employeerestapi.model.Employees;
 import com.employee.employeerestapi.repository.EmployeeDAO;
 
-@RequestMapping("/hello")
 @RestController
+@RequestMapping(path = "/employees/")
 public class EmployeeController {
 
-	@GetMapping
-    public String hello() {
-        return "Hello TechPrimers";
+	@Autowired
+    private EmployeeDAO employeeDao;
+     
+    @GetMapping(path="/", produces = "application/json")
+    public Employees getEmployees() 
+    {
+        return employeeDao.getAllEmployees();
+    }
+    
+    @PostMapping(path= "/", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Object> addEmployee(@RequestBody Employee employee) 
+    {
+        Integer id = employeeDao.getAllEmployees().getEmployeeList().size() + 1;
+        employee.setId(id);
+         
+        employeeDao.addEmployee(employee);
+         
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                                    .path("/{id}").buildAndExpand(employee.getId()).toUri();
+         
+        return ResponseEntity.created(location).build();
     }
 }
