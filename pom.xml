@@ -13,8 +13,8 @@
 	<artifactId>employee-rest-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>employee-rest-api</name>
-	<packaging>jar</packaging>
-	<description>Demo project for Spring Boot</description>
+	<packaging>war</packaging>
+	<description>Spring Boot REST API</description>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -46,14 +46,32 @@
 
 	<build>
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-war</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>war-exploded</id>
+						<configuration>
+							<webappDirectory>target/deploy</webappDirectory>
+							<archiveClasses>true</archiveClasses>
+						</configuration>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>exploded</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-war-plugin</artifactId> 
-				<executions> <execution> <id>default-war</id> <phase>prepare-package</phase> 
-				<configuration> <failOnMissingWebXml>false</failOnMissingWebXml> </configuration> 
-				</execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 
